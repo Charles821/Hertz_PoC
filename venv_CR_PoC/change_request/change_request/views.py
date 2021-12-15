@@ -71,8 +71,8 @@ def change():
 
         db.session.add(new_change)
         db.session.commit()
-        #send_mail(message)
-        #status_mail(message)
+        send_mail(message)
+        status_mail(message)
         changes = ChangeControl.query.all()
         
         for change in changes:
