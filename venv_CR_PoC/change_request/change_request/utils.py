@@ -160,33 +160,40 @@ def summary_mail(message, summary_list):
     This function is intended to generate a summary table for weekly delivery.
     """
     global email_distribution, cc_email_distribution, normal_email_distribution, add_distribution
+    detail_string = ''
+    detail_string2 = ''
+
+    for index in summary_list:
+        for val1 in index.values():
+            detail_string += """<tr>""" + '\n'
+            detail_string += """<td>""" + val1['start_date'] + """</td>""" + '\n'
+            detail_string += """<td>""" + val1['title'] + """</td>""" + '\n'
+            detail_string += """<td>""" + val1['network_impact_details'] + """</td>""" + '\n'
+            detail_string += """</tr>""" + '\n'
+
+    detail_string2 += """<html>""" + '\n'
+    detail_string2 += """<head>""" + '\n'
+    detail_string2 += """<style>""" + '\n'
+    detail_string2 += """td {border: 1px solid black;}""" + '\n'
+    detail_string2 += """</style>""" + '\n'
+    detail_string2 += """<body style=background-color: #80aaff; min-height=400px;>""" + '\n'
+    detail_string2 += """<H1>Change Request Info</H1><br>""" + '\n'
+    detail_string2 += """<table role=presentation style=border:1px solid black; border-collapse:collapse; width: 80%;>""" + '\n'
+    detail_string2 += """<tr style=background-color:#FFFFE0;>""" + '\n'
+    detail_string2 += """<td><b>Date of Change</b></td>""" + '\n'
+    detail_string2 += """<td><b>Title</b></td>""" + '\n'
+    detail_string2 += """<td><b>Network Impact</b></td>""" + '\n'
+    detail_string2 += """<td><b>Service Request</b></td>""" + '\n'
+    detail_string2 += """<td><b>Hertz Change</b></td>""" + '\n'
+    detail_string2 += """</tr>""" + '\n'
+
     if message['swivel_desk'] == 'yes':
         normal_email_distribution.remove('swiveldesk@hertz.com')
     msg = Message("Change Control Activities", sender="changecontrol@hertz.com",
                   recipients=email_distribution
                   )
-    msg.html = "<html>\
-                <head>\
-                    <style>\
-                        td {border: 1px solid black;}\
-                    </style>\
-                    <body style=\"background-color: #80aaff; min-height=400px;\">\
-                    <H1>Change Request Info</H1><br>\
-                    <table role=\"presentation\"style=\"border:1px solid black; border-collapse:collapse; width: 80%;\">\
-                    <tr style=\"background-color:#FFFFE0;\">\
-                        <td><b>Date of Change</b></td>\
-                        <td><b>Title</b></td>\
-                        <td><b>Network Impact</b></td>\
-                        <td><b>Service Request</b></td>\
-                        <td><b>Hertz Change</b></td>\
-                    </tr>\""
-    for index in summary_list:
-        for val1 in index.values():
-            msg.html += "<tr>\
-                             <td>"+ val1['start_date'] + "</td>\
-                             <td>"+ val1['title'] + "</td>\
-                             <td>"+ val1['network_impact_details'] + "/td>\
-                        </tr>\""
+    msg.html = detail_string2
+    msg.html += detail_string
     msg.html += "</table>\
                  </body>\
                  </html>"

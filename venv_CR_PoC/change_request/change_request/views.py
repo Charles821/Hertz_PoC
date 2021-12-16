@@ -80,15 +80,9 @@ def change():
             summary_dict["arg" + str(arg_num)]['start_date'] = str(change.start_date)
             summary_dict["arg" + str(arg_num)]['title'] = str(change.title)
             summary_dict["arg" + str(arg_num)]['network_impact_details'] = str(change.network_impact_details)
-            #summary_list.append(dict(summary_dict))
             arg_num +=1
 
         summary_list.append(dict(summary_dict))
-        #print(type(summary_dict.values()))
-        #print(summary_list)
-        #print(summary_dict['arg0']['start_date'])
-        #print(type(summary_dict['arg0']['start_date']))
-        #print(type(str(summary_dict['arg0']['start_date'])))
         summary_mail(message, summary_list)
         return redirect(url_for('change_request.list_all'))
     return render_template('change.html', form=form)
